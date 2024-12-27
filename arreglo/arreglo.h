@@ -46,6 +46,9 @@ void *arrObtener(arreglo_t *arreglo, uint32_t indice);
 /*Imprime el arreglo en el archivo especificado con el formato [elem1, elem2] */
 void arrImprimir(arreglo_t *arreglo, FILE *archivo);
 
+/*Libera toda la memoria ocupada por el arreglo y sus elementos*/
+void arrDelete(arreglo_t *arreglo);
+
 /* Funciones auxiliares */
 /*Cambia el tamaño del arreglo por el enviado por parametro. Los elementos se mantienen*/
 void _arrRedimensionar(arreglo_t *arreglo, uint32_t nuevoTam);

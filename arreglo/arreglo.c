@@ -46,6 +46,15 @@ void *arrObtener(arreglo_t *arreglo, uint32_t posicion){
     return arreglo->datos[posicion];
 }
 
+void arrDelete(arreglo_t *arreglo){
+    void** datos = arreglo->datos;
+    for(uint32_t i = 0; i < arreglo->cantidad; i++){
+        free(datos[i]);
+    }
+    free(datos);
+    free(arreglo);
+}
+
 void _arrRedimensionar(arreglo_t *arreglo, uint32_t nuevoTam){
     void** nuevosDatos = malloc(sizeof(void*)*nuevoTam);
 
