@@ -9,6 +9,18 @@ void testPilaVacia(){
     printTestExito("Una pila recien creada se comporta como vacia");
 }
 
+void testPilaCantidad(){
+    pilaDinamica_t *pila = crearPilaDinamica(TipoInt);
+
+    for(int i = 0; i < 10; i++){
+        pilaApilar(pila, &i);
+    }
+
+    assert(pilaCantidad(pila) == 10);
+    pilaEliminar(pila);
+    printTestExito("La cantidad de la pila se imprime correctamente");
+}
+
 void testPilaApilar(){
     pilaDinamica_t *pila = crearPilaDinamica(TipoInt);
 
@@ -65,6 +77,7 @@ void testPilaApilarDesapilar(){
 
 void main(){
     testPilaVacia();
+    testPilaCantidad();
     testPilaApilar();
     testPilaDesapilar();
     testPilaApilarDesapilar();

@@ -12,6 +12,11 @@ bool pilaEstaVacia(pilaDinamica_t *pila){
     return arrEstaVacio(pila->datos);
 }
 
+//grande mel :p
+uint32_t pilaCantidad(pilaDinamica_t *pila){
+    return arrCantidad(pila->datos);
+}
+
 void pilaApilar(pilaDinamica_t *pila, void *elemento){
     arrInsertarUltimo(pila->datos, elemento);
 }
