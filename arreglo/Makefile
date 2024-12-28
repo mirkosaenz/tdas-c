@@ -1,10 +1,14 @@
 CC=gcc
 CFLAGS=-c
 OUTPUT=arreglo_tests
-FILES=arreglo_tests.o arreglo.o arreglo_tests
+DEPENDENCIES=arreglo_tests.o arreglo.o utils.o
+FILES=arreglo_tests.o arreglo.o arreglo_tests utils.o
 
-$(OUTPUT): arreglo_tests.o arreglo.o
+$(OUTPUT): $(DEPENDENCIES)
 	$(CC) $^ -o $(OUTPUT)
+
+utils.o: ../test_utils/utils.c
+	$(CC) $(CFLAGS) $<
 
 arreglo_tests.o: arreglo_tests.c
 	$(CC) $(CFLAGS) $<

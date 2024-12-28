@@ -32,6 +32,15 @@ void arrInsertarUltimo(arreglo_t *arreglo, void* elemento){
     }
 }
 
+void* arrBorrarUltimo(arreglo_t *arreglo){
+    if(arreglo->cantidad == 0){
+        return NULL; //hacer comprobacion de errores
+    }
+
+    (arreglo->cantidad)--;
+    return arreglo->datos[arreglo->cantidad];
+}
+
 void arrImprimir(arreglo_t *arreglo, FILE *archivo){
     fprintf(archivo, "[");
     for(int i = 0; i < arreglo->cantidad - 1; i++){
@@ -46,7 +55,7 @@ void *arrObtener(arreglo_t *arreglo, uint32_t posicion){
     return arreglo->datos[posicion];
 }
 
-void arrDelete(arreglo_t *arreglo){
+void arrEliminar(arreglo_t *arreglo){
     void** datos = arreglo->datos;
     for(uint32_t i = 0; i < arreglo->cantidad; i++){
         free(datos[i]);

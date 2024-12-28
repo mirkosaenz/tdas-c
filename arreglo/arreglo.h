@@ -47,7 +47,10 @@ void *arrObtener(arreglo_t *arreglo, uint32_t indice);
 void arrImprimir(arreglo_t *arreglo, FILE *archivo);
 
 /*Libera toda la memoria ocupada por el arreglo y sus elementos*/
-void arrDelete(arreglo_t *arreglo);
+void arrEliminar(arreglo_t *arreglo);
+
+/*Elimina y devuelve el ultimo elemento del arreglo*/
+void *arrBorrarUltimo(arreglo_t *arreglo);
 
 /* Funciones auxiliares */
 /*Cambia el tamaño del arreglo por el enviado por parametro. Los elementos se mantienen*/
