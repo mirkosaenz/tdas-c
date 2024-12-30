@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define CANTIDAD_VOLUMEN 100000
+#define CANTIDAD_ITERACIONES 1000
 #define TEST_OK "OK"
 #define TEST_FAIL "FAILED"
 

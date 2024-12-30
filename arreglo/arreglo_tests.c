@@ -1,9 +1,27 @@
 #include "../test_utils/utils.h"
 #include "arreglo.h"
+#include <stdio.h>
+
+int* clonarInt(int *numero){
+    int *clonado = malloc(sizeof(int));
+    *clonado = *numero;
+    return clonado;
+}
+
+void liberarInt(int *numero){
+    free(numero);
+}
+
+void imprimirInt(FILE *archivo, int *numero){
+    fprintf(archivo, "%d", *numero);
+}
 
 //Testea que el arreglo se cree correctamente
 void testCrearArreglo(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
 
     assert(arreglo != NULL);
     arrEliminar(arreglo);
@@ -11,7 +29,10 @@ void testCrearArreglo(){
 }
 
 void testCantidadArregloVacio(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
     
     assert(arrCantidad(arreglo) == 0);
     arrEliminar(arreglo);
@@ -19,7 +40,10 @@ void testCantidadArregloVacio(){
 }
 
 void testArregloEstaVacio(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
 
     assert(arrEstaVacio(arreglo) == true);
     arrEliminar(arreglo);
@@ -27,7 +51,10 @@ void testArregloEstaVacio(){
 }
 
 void testInsertarUltimo(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
     int numero = 4;
     arrInsertarUltimo(arreglo, &numero);
 
@@ -46,7 +73,10 @@ void testInsertarUltimo(){
 }
 
 void testArrPrint(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
     int numero = 4;
     
     for(int i = 1; i <= 4; i++){
@@ -54,7 +84,7 @@ void testArrPrint(){
     }
     
     FILE* archivo = fopen("./salida.txt", "w");
-    arrImprimir(arreglo, archivo);
+    arrImprimir(arreglo, archivo, (funcionImprimir_t*)&(imprimirInt));
     fclose(archivo);
 
     FILE* archivoLectura = fopen("./salida.txt", "r");
@@ -69,7 +99,10 @@ void testArrPrint(){
 }
 
 void testObtener(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
 
     for(int i = 0; i < 101; i++){
         int numero = i;
@@ -82,7 +115,10 @@ void testObtener(){
 }
 
 void testArrEliminar(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
     
     for(int i = 0; i < 101; i++){
         int numero = i;
@@ -94,7 +130,10 @@ void testArrEliminar(){
 }
 
 void testArrBorrarUltimo(){
-    arreglo_t *arreglo = crearArregloGenerico(TipoInt);
+    arreglo_t *arreglo = crearArregloGenerico(
+        (funcionClonar_t*)&(clonarInt),
+        (funcionEliminar_t*)&(liberarInt)
+    );
 
     for(int i = 0; i < 11; i++){
         int numero = i;

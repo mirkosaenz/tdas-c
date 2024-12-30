@@ -1,14 +1,15 @@
 #include <stdlib.h>
 #include "arreglo.h"
 
-arreglo_t *crearArregloGenerico(tipo_t tipo){
+arreglo_t *crearArregloGenerico(funcionClonar_t *clonador, funcionEliminar_t *destructor){
     arreglo_t *arreglo = malloc(sizeof(arreglo_t));
     void** datos = malloc(sizeof(void*)*TAM_INICIAL);
     
     arreglo->cantidad = 0;
-    arreglo->tipo = tipo;
     arreglo->tam = TAM_INICIAL;
     arreglo->datos = datos;
+    arreglo->clonador = clonador;
+    arreglo->destructor = destructor;
 
     return arreglo;
 }
@@ -22,7 +23,7 @@ uint32_t arrCantidad(arreglo_t *arreglo){
 }
 
 void arrInsertarUltimo(arreglo_t *arreglo, void* elemento){
-    void* copia = obtenerClonador(arreglo->tipo)(elemento);
+    void* copia = (arreglo->clonador)(elemento);
     
     (arreglo->datos)[arreglo->cantidad] = copia;
     arreglo->cantidad += 1;
@@ -41,13 +42,13 @@ void* arrBorrarUltimo(arreglo_t *arreglo){
     return arreglo->datos[arreglo->cantidad];
 }
 
-void arrImprimir(arreglo_t *arreglo, FILE *archivo){
+void arrImprimir(arreglo_t *arreglo, FILE *archivo, funcionImprimir_t *impresor){
     fprintf(archivo, "[");
     for(int i = 0; i < arreglo->cantidad - 1; i++){
-        obtenerImpresor(arreglo->tipo)(archivo, arreglo->datos[i]);
+        impresor(archivo, arreglo->datos[i]);
         fprintf(archivo, ",");
     }
-    obtenerImpresor(arreglo->tipo)(archivo, arreglo->datos[arreglo->cantidad - 1]);
+    impresor(archivo, arreglo->datos[arreglo->cantidad - 1]);
     fprintf(archivo, "]\n");
 }
 
@@ -58,7 +59,7 @@ void *arrObtener(arreglo_t *arreglo, uint32_t posicion){
 void arrEliminar(arreglo_t *arreglo){
     void** datos = arreglo->datos;
     for(uint32_t i = 0; i < arreglo->cantidad; i++){
-        free(datos[i]);
+        (arreglo->destructor)(datos[i]);
     }
     free(datos);
     free(arreglo);
@@ -74,52 +75,4 @@ void _arrRedimensionar(arreglo_t *arreglo, uint32_t nuevoTam){
     free(arreglo->datos);
     arreglo->datos = nuevosDatos;
     arreglo->tam = nuevoTam;
-}
-
-funcClone_t *obtenerClonador(tipo_t tipo){
-    switch(tipo){
-        case TipoInt: 
-            return (funcClone_t*)&intClone; 
-            break;
-        case TipoString:
-            return (funcClone_t*)&strClone;
-    }
-}
-
-funcPrint_t *obtenerImpresor(tipo_t tipo){
-    switch(tipo){
-        case TipoInt:
-            return (funcPrint_t*)&intPrint;
-            break;
-        case TipoString:
-            return (funcPrint_t*)&strPrint;
-    }
-}
-
-void intPrint(FILE *archivo, int *numero){
-    fprintf(archivo, "%d", *numero);
-}
-
-void strPrint(FILE *archivo, char **cadena){
-    fprintf(archivo, "%s", *cadena);
-}
-
-int *intClone(int *numero){
-    int *copia = malloc(sizeof(int));
-    *copia = *numero;
-    return copia;
-}
-
-char *strClone(char *cadena){
-    int cantidad = 0;
-    while(cadena[cantidad] != '\0'){
-        cantidad++;
-    }
-
-    char *cadenaNueva = malloc(sizeof(char*)*cantidad);
-    for(int i = 0; i < cantidad; i++){
-        cadenaNueva[i] = cadena[i];
-    }
-
-    return cadenaNueva;
 }
